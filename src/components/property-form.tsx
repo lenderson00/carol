@@ -366,7 +366,7 @@ export function PropertyForm({ propertyToEdit, onPropertyRegistered }: PropertyF
         setBannerFile(null) // Clear on error too
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [bannerFile])
 
 

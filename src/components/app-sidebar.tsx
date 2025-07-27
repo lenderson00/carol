@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Building2, MapPin } from "lucide-react"
+import { Building2, MapPin, Gift } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -31,6 +31,13 @@ const data = {
       title: "Confirmações",
       url: "/dashboard/confirmacoes",
       icon: MapPin,
+      isActive: false,
+      items: [],
+    },
+    {
+      title: "Presentes",
+      url: "/dashboard/presentes",
+      icon: Gift,
       isActive: false,
       items: [],
     },

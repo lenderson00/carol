@@ -7,9 +7,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
-import { Calendar, MapPin, Clock, Heart, Camera, QrCode, ArrowRight } from "lucide-react"
+import { Calendar, MapPin, Clock, Heart, Camera, QrCode, ArrowRight, Gift } from "lucide-react"
 import { PhotoGallery } from "@/components/photo-gallery"
-import { SnowParticles } from "@/components/snow-particles"
+import Navbar from "@/components/navbar"
+import Snowfall from 'react-snowfall'
+
 
 interface Image {
   id: string
@@ -120,8 +122,15 @@ export default function HomeClient({ images }: HomeClientProps) {
 
   return (
     <div className="min-h-screen winter-gradient relative overflow-hidden">
-      <SnowParticles />
-      
+      <Navbar />
+      <Snowfall
+  // Changes the snowflake color
+  color="white"
+  // Applied to the canvas element
+  style={{ background: 'transparent' }}
+  // Controls the number of snowflakes that are created (default 150)
+  snowflakeCount={100}
+/>
       {/* Hero Section */}
       <div className="relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -210,6 +219,17 @@ export default function HomeClient({ images }: HomeClientProps) {
                 <p className="text-sm text-white/60 mt-2">Carol</p>
               </div>
             </div>
+          </div>
+
+          {/* Gift List Link */}
+          <div className="text-center mt-8">
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3">
+              <a href="/lista">
+                <Gift className="mr-2 h-4 w-4" />
+                Ver Lista Completa de Presentes
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
           </div>
         </div>
       </div>

@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PageHeader } from "@/components/page-header"
 import DashboardStats from "@/components/dashboard-stats"
 import { useAnalytics } from "@/hooks/use-analytics"
 import Link from "next/link"
-import { Image, Users, Calendar, Heart, ArrowRight } from "lucide-react"
+import { Image, Users, Calendar, Heart, ArrowRight, Gift } from "lucide-react"
 
 export default function DashboardPage() {
   useAnalytics()
@@ -72,6 +72,32 @@ export default function DashboardPage() {
               <Link href="/dashboard/confirmacoes">
                 <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
                   Ver Confirmações
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Lista de Presentes */}
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg">
+                  <Gift className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <CardTitle>Lista de Presentes</CardTitle>
+                  <CardDescription>Gerencie os presentes da festa</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Organize e gerencie a lista de presentes com categorias e imagens.
+              </p>
+              <Link href="/dashboard/presentes">
+                <Button className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700">
+                  Gerenciar Presentes
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -158,6 +184,12 @@ export default function DashboardPage() {
                   <Button variant="outline" className="w-full justify-start">
                     <Users className="mr-2 h-4 w-4" />
                     Confirmações
+                  </Button>
+                </Link>
+                <Link href="/dashboard/presentes" className="block">
+                  <Button variant="outline" className="w-full justify-start">
+                    <Gift className="mr-2 h-4 w-4" />
+                    Lista de Presentes
                   </Button>
                 </Link>
               </div>

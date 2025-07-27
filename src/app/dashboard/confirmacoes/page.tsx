@@ -152,7 +152,7 @@ export default function ConfirmacoesPage() {
                         <div className="mt-2 flex items-start gap-2 text-sm">
                           <MessageCircle className="h-4 w-4 mt-0.5 text-muted-foreground" />
                           <p className="text-muted-foreground italic">
-                            "{confirmation.message}"
+                            &quot;{confirmation.message}&quot;
                           </p>
                         </div>
                       )}

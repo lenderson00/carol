@@ -9,5 +9,5 @@ export default async function Home() {
     },
   })
 
-  return <HomeClient images={images} />
+  return <div className="min-h-screen bg-black relative overflow-hidden"><HomeClient images={images} /></div>
 }
