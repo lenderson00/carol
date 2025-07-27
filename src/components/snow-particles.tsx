@@ -6,73 +6,63 @@ export function SnowParticles() {
   return (
     <Particles
       id="snow-particles"
+      className="fixed inset-0 pointer-events-none z-10"
       options={{
         background: {
           color: {
             value: "transparent",
           },
         },
-        fpsLimit: 120,
+        fpsLimit: 60,
         interactivity: {
           events: {
             onClick: {
               enable: false,
-              mode: "push",
             },
             onHover: {
               enable: false,
-              mode: "repulse",
             },
             resize: {
               enable: true,
             },
           },
-          modes: {
-            push: {
-              quantity: 4,
-            },
-            repulse: {
-              distance: 200,
-              duration: 0.4,
-            },
-          },
         },
         particles: {
           color: {
-            value: "hsl(var(--primary))",
-          },
-          links: {
-            color: "transparent",
-            distance: 150,
-            enable: false,
-            opacity: 0.5,
-            width: 1,
+            value: ["#ffffff", "#e0e0e0", "#c0c0c0", "#a0a0a0"],
           },
           move: {
             direction: "bottom",
-            distance: 0,
             enable: true,
             outModes: {
               default: "out",
             },
-            random: false,
-            speed: 1,
+            random: true,
+            speed: { min: 0.5, max: 2 },
             straight: false,
           },
           number: {
             density: {
               enable: true,
             },
-            value: 80,
+            value: 100,
           },
           opacity: {
-            value: 0.5,
+            value: { min: 0.3, max: 0.8 },
+            animation: {
+              enable: true,
+              speed: 1,
+            },
           },
           shape: {
             type: "circle",
           },
           size: {
-            value: { min: 1, max: 3 },
+            value: { min: 1, max: 4 },
+            animation: {
+              enable: true,
+              speed: 2,
+            },
           },
         },
         detectRetina: true,

@@ -119,7 +119,7 @@ export default function HomeClient({ images }: HomeClientProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen winter-gradient relative overflow-hidden">
       <SnowParticles />
       
       {/* Hero Section */}
@@ -127,87 +127,87 @@ export default function HomeClient({ images }: HomeClientProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <div className="mb-8">
-              <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-                <span className="text-primary">
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+                <span className="winter-text-gradient">
                   Carol
                 </span>
                 <br />
-                <span className="text-gray-700">15 Anos</span>
+                <span className="text-white/90">15 Anos</span>
               </h1>
               <h2 className="text-2xl md:text-3xl font-light text-primary mb-4">
                 Baile de Inverno
               </h2>
-              <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
                 Uma noite mágica de festa, dança e momentos inesquecíveis
               </p>
             </div>
             
             {/* Event Details */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-              <div className="flex items-center justify-center space-x-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-center space-x-3 winter-card rounded-lg p-4">
                 <Calendar className="h-6 w-6 text-primary" />
                 <div className="text-left">
-                  <p className="font-semibold text-gray-900">Data</p>
-                  <p className="text-gray-600">21 de Novembro, 2025</p>
+                  <p className="font-semibold text-white">Data</p>
+                  <p className="text-white/80">21 de Novembro, 2025</p>
                 </div>
               </div>
               
-              <div className="flex items-center justify-center space-x-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-center space-x-3 winter-card rounded-lg p-4">
                 <Clock className="h-6 w-6 text-primary" />
                 <div className="text-left">
-                  <p className="font-semibold text-gray-900">Horário</p>
-                  <p className="text-gray-600">21:00 às 02:00</p>
+                  <p className="font-semibold text-white">Horário</p>
+                  <p className="text-white/80">21:00 às 02:00</p>
                 </div>
               </div>
               
-              <div className="flex items-center justify-center space-x-3 bg-gray-50 rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-center space-x-3 winter-card rounded-lg p-4">
                 <MapPin className="h-6 w-6 text-primary" />
                 <div className="text-left">
-                  <p className="font-semibold text-gray-900">Local</p>
-                  <p className="text-gray-600">Av. Brás de Pina, 1867</p>
-                  <p className="text-gray-600 text-sm">Vista Alegre, Rio de Janeiro</p>
+                  <p className="font-semibold text-white">Local</p>
+                  <p className="text-white/80">Av. Brás de Pina, 1867</p>
+                  <p className="text-white/80 text-sm">Vista Alegre, Rio de Janeiro</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200 max-w-2xl mx-auto">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Traje</h3>
-              <p className="text-gray-600">Esporte Fino</p>
+            <div className="winter-card rounded-lg p-6 max-w-2xl mx-auto">
+              <h3 className="text-xl font-semibold text-white mb-2">Traje</h3>
+              <p className="text-white/80">Esporte Fino</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Pix Section */}
-      <div className="relative z-20 bg-gray-50 py-16">
+      <div className="relative z-20 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Vai me dar presente?
             </h2>
             <p className="text-xl text-primary font-semibold mb-8">
               Manda um pix!
             </p>
-            <p className="text-gray-600 mb-8">
+            <p className="text-white/80 mb-8">
               É só usar o número de celular (21) 972629125 ou o QR Code.
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             {/* QR Code Placeholder */}
-            <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-              <div className="w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                <QrCode className="h-24 w-24 text-gray-400" />
+            <div className="winter-card p-8 rounded-lg">
+              <div className="w-48 h-48 bg-white/10 rounded-lg flex items-center justify-center border border-white/20">
+                <QrCode className="h-24 w-24 text-white/60" />
               </div>
-              <p className="text-center text-sm text-gray-500 mt-4">QR Code Pix</p>
+              <p className="text-center text-sm text-white/60 mt-4">QR Code Pix</p>
             </div>
 
             {/* Phone Number */}
             <div className="text-center">
-              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Número do Pix</h3>
+              <div className="winter-card p-6 rounded-lg">
+                <h3 className="text-lg font-semibold text-white mb-2">Número do Pix</h3>
                 <p className="text-2xl font-bold text-primary">(21) 972629125</p>
-                <p className="text-sm text-gray-500 mt-2">Carol</p>
+                <p className="text-sm text-white/60 mt-2">Carol</p>
               </div>
             </div>
           </div>
@@ -218,10 +218,10 @@ export default function HomeClient({ images }: HomeClientProps) {
       <div className="relative z-20 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <p className="text-gray-600 mb-4">
+            <p className="text-white/80 mb-4">
               Você também pode acessar a lista de sugestões de presentes
             </p>
-            <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-3">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3">
               Ver Lista de Presentes
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -229,14 +229,14 @@ export default function HomeClient({ images }: HomeClientProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {giftCategories.map((category, index) => (
-              <Card key={index} className="border border-gray-200">
+              <Card key={index} className="winter-card border-white/20">
                 <CardHeader>
                   <CardTitle className="text-primary">{category.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-sm">
                     {category.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="text-gray-600">
+                      <li key={itemIndex} className="text-white/80">
                         • {item}
                       </li>
                     ))}
@@ -249,14 +249,14 @@ export default function HomeClient({ images }: HomeClientProps) {
       </div>
 
       {/* Photo Gallery Section */}
-      <div className="relative z-20 bg-gray-50 py-16">
+      <div className="relative z-20 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <Camera className="mx-auto h-12 w-12 text-primary mb-4" />
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Fotos da Carol
             </h2>
-            <p className="text-gray-600 text-lg">
+            <p className="text-white/80 text-lg">
               Momentos especiais da nossa aniversariante
             </p>
           </div>
@@ -268,15 +268,15 @@ export default function HomeClient({ images }: HomeClientProps) {
       {/* Confirmation Form Section */}
       <div className="relative z-20 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="shadow-lg border border-gray-200">
+          <Card className="winter-card shadow-lg border-white/20">
             <CardHeader className="text-center">
               <div className="mx-auto w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-4">
-                <Heart className="h-8 w-8 text-white" />
+                <Heart className="h-8 w-8 text-primary-foreground" />
               </div>
-              <CardTitle className="text-3xl font-bold text-gray-900">
+              <CardTitle className="text-3xl font-bold text-white">
                 Confirme sua Presença
               </CardTitle>
-              <CardDescription className="text-lg text-gray-600">
+              <CardDescription className="text-lg text-white/80">
                 Ajude-nos a organizar essa festa especial confirmando sua presença
               </CardDescription>
             </CardHeader>
@@ -285,53 +285,53 @@ export default function HomeClient({ images }: HomeClientProps) {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Nome Completo</label>
+                    <label className="text-sm font-medium text-white">Nome Completo</label>
                     <Input
                       type="text"
                       placeholder="Seu nome completo"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       required
-                      className="border-gray-300 focus:border-primary focus:ring-primary"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-primary focus:ring-primary"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Telefone</label>
+                    <label className="text-sm font-medium text-white">Telefone</label>
                     <Input
                       type="tel"
                       placeholder="(21) 99999-9999"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       required
-                      className="border-gray-300 focus:border-primary focus:ring-primary"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-primary focus:ring-primary"
                     />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">E-mail</label>
+                  <label className="text-sm font-medium text-white">E-mail</label>
                   <Input
                     type="email"
                     placeholder="seu@email.com"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     required
-                    className="border-gray-300 focus:border-primary focus:ring-primary"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-primary focus:ring-primary"
                   />
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Número de Pessoas</label>
+                    <label className="text-sm font-medium text-white">Número de Pessoas</label>
                     <Select 
                       value={formData.familyNumber.toString()} 
                       onValueChange={(value) => setFormData({...formData, familyNumber: parseInt(value)})}
                     >
-                      <SelectTrigger className="border-gray-300 focus:border-primary focus:ring-primary">
+                      <SelectTrigger className="bg-white/10 border-white/20 text-white focus:border-primary focus:ring-primary">
                         <SelectValue placeholder="Selecione" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-card border-white/20">
                         {[1, 2, 3, 4, 5, 6].map((num) => (
                           <SelectItem key={num} value={num.toString()}>
                             {num} {num === 1 ? 'pessoa' : 'pessoas'}
@@ -342,7 +342,7 @@ export default function HomeClient({ images }: HomeClientProps) {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Confirmação</label>
+                    <label className="text-sm font-medium text-white">Confirmação</label>
                     <div className="flex gap-4">
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -351,9 +351,9 @@ export default function HomeClient({ images }: HomeClientProps) {
                           value="CONFIRMED"
                           checked={formData.status === "CONFIRMED" || formData.status === ""}
                           onChange={(e) => setFormData({...formData, status: e.target.value})}
-                          className="text-primary focus:ring-primary border-gray-300"
+                          className="text-primary focus:ring-primary border-white/20"
                         />
-                        <span className="text-sm text-gray-700">Sim</span>
+                        <span className="text-sm text-white">Sim</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -362,22 +362,22 @@ export default function HomeClient({ images }: HomeClientProps) {
                           value="REJECTED"
                           checked={formData.status === "REJECTED"}
                           onChange={(e) => setFormData({...formData, status: e.target.value})}
-                          className="text-primary focus:ring-primary border-gray-300"
+                          className="text-primary focus:ring-primary border-white/20"
                         />
-                        <span className="text-sm text-gray-700">Não</span>
+                        <span className="text-sm text-white">Não</span>
                       </label>
                     </div>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Mensagem (opcional)</label>
+                  <label className="text-sm font-medium text-white">Mensagem (opcional)</label>
                   <Textarea
                     placeholder="Deixe uma mensagem especial para a Carol..."
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     rows={4}
-                    className="border-gray-300 focus:border-primary focus:ring-primary"
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-primary focus:ring-primary"
                   />
                 </div>
                 
@@ -385,7 +385,7 @@ export default function HomeClient({ images }: HomeClientProps) {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     {isSubmitting ? "Enviando..." : "Confirmar Presença"}
                   </Button>
@@ -397,12 +397,12 @@ export default function HomeClient({ images }: HomeClientProps) {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-black/20 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-lg">
             Com muito carinho, família da Carol
           </p>
-          <p className="text-gray-400 mt-2">
+          <p className="text-white/60 mt-2">
             Uma celebração especial dos 15 anos - Baile de Inverno
           </p>
         </div>

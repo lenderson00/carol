@@ -21,7 +21,7 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
         images.map((image) => (
           <div
             key={image.id}
-            className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+            className="group relative aspect-square overflow-hidden rounded-lg winter-card border-white/20 shadow-sm"
           >
             <img
               src={image.url}
@@ -30,7 +30,7 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
             />
             
             {/* Overlay on hover */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <div className="opacity-0 group-hover:opacity-100 transition-opacity">
                 <p className="text-white text-sm font-medium">{image.name}</p>
               </div>
@@ -42,13 +42,13 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
         Array.from({ length: 8 }).map((_, index) => (
           <div
             key={index}
-            className="group relative aspect-square overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+            className="group relative aspect-square overflow-hidden rounded-lg winter-card border-white/20 shadow-sm"
           >
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <Camera className="mx-auto h-8 w-8 text-primary mb-2" />
-                <p className="text-gray-600 text-sm">Carol</p>
-                <p className="text-gray-500 text-xs">Foto {index + 1}</p>
+                <p className="text-white text-sm">Carol</p>
+                <p className="text-white/60 text-xs">Foto {index + 1}</p>
               </div>
             </div>
           </div>
