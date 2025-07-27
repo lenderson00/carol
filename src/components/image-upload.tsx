@@ -78,7 +78,7 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
         }
       }
     }
-  }, [handleImageChange])
+  }, [handleImageChange, uploadToBunny])
 
   // Add paste event listener when component mounts
   React.useEffect(() => {
@@ -96,6 +96,8 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
         try {
           const uploadedUrl = await uploadToBunny(files[0].file as File)
           handleImageChange(uploadedUrl)
+          // Clear the file after successful upload
+          removeFile(files[0].id)
         } catch (error) {
           console.error('Failed to upload file:', error)
         } finally {
@@ -104,7 +106,7 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
       }
       uploadFile()
     }
-  }, [files, handleImageChange])
+  }, [files, handleImageChange, removeFile])
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>

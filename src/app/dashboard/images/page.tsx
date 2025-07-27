@@ -39,35 +39,41 @@ export default function ImagesPage() {
   const handleImageUpload = async (imageUrl: string) => {
     if (!imageUrl) return
 
-    setIsUploading(true)
-    try {
-      // Extract filename from URL or generate one
-      const fileName = imageUrl.split('/').pop()?.split('?')[0] || `image-${Date.now()}.avif`
-      
-      // Save to database
-      const dbResponse = await fetch("/api/images", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: fileName,
-          url: imageUrl,
-        }),
-      })
+    // If it's a Bunny CDN URL, save to database
+    if (imageUrl.includes('cdn.curyrio.com.br')) {
+      setIsUploading(true)
+      try {
+        // Extract filename from URL or generate one
+        const fileName = imageUrl.split('/').pop()?.split('?')[0] || `image-${Date.now()}.avif`
+        
+        // Save to database
+        const dbResponse = await fetch("/api/images", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: fileName,
+            url: imageUrl,
+          }),
+        })
 
-      if (dbResponse.ok) {
-        toast.success("Imagem enviada com sucesso!")
-        setUploadedImageUrl("") // Clear the input
-        fetchImages() // Refresh the list
-      } else {
-        toast.error("Erro ao salvar no banco de dados")
+        if (dbResponse.ok) {
+          toast.success("Imagem enviada com sucesso!")
+          setUploadedImageUrl("") // Clear the input
+          fetchImages() // Refresh the list
+        } else {
+          toast.error("Erro ao salvar no banco de dados")
+        }
+      } catch (error) {
+        console.error("Erro ao salvar imagem:", error)
+        toast.error("Erro ao salvar imagem")
+      } finally {
+        setIsUploading(false)
       }
-    } catch (error) {
-      console.error("Erro ao salvar imagem:", error)
-      toast.error("Erro ao salvar imagem")
-    } finally {
-      setIsUploading(false)
+    } else {
+      // For manual URLs, just update the state
+      setUploadedImageUrl(imageUrl)
     }
   }
 
