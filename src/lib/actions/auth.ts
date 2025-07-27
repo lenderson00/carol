@@ -11,12 +11,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const baseSignIn = async (credentials: {
-  email: string;
+  username: string;
   password: string;
 }) => {
   try {
     await signInAction("credentials", {
-      email: credentials.email,
+      username: credentials.username,
       password: credentials.password,
       redirect: false,
     });
@@ -29,7 +29,7 @@ export const baseSignIn = async (credentials: {
 };
 
 export const signIn = async (credentials: {
-  email: string;
+  username: string;
   password: string;
 }) => {
   const result = await baseSignIn(credentials);
@@ -38,7 +38,7 @@ export const signIn = async (credentials: {
   }
 
   const user = await prisma.user.findUnique({
-    where: { email: credentials.email },
+    where: { username: credentials.username },
   });
 
   if (!user) {
@@ -88,11 +88,11 @@ export const resetPassword = async (password: string) => {
   const user = await prisma.user.update({
     where: { id: session.user.id },
     data: { password: hashedPassword },
-    select: { email: true },
+    select: { username: true },
   });
 
   await signInAction("credentials", {
-    email: user.email,
+    username: user.username,
     password: password,
     redirect: false,
   });

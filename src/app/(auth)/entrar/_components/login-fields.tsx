@@ -16,16 +16,16 @@ interface LoginFieldsProps {
 export function LoginFields({ form }: LoginFieldsProps) {
   return (
     <>
-      <FormField control={form.control} name="email">
+      <FormField control={form.control} name="username">
         {({ field }) => (
           <FormItem>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Usuário</FormLabel>
             <FormControl>
               <Input
-                placeholder="Digite seu email..."
+                placeholder="Digite seu usuário..."
                 type="text"
                 {...field}
-                autoComplete="email"
+                autoComplete="username"
               />
             </FormControl>
             <FormMessage />

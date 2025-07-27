@@ -13,11 +13,13 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Plus, Gift, Edit, Trash2, Loader2 } from "lucide-react"
 import { useGifts } from "@/hooks/use-gifts"
 import ImageUpload from "@/components/image-upload"
+import Image from "next/image"
 
 export default function PresentesPage() {
-  const { gifts, categories, loading, error, addGift, deleteGift, addCategory } = useGifts()
+  const { gifts, categories, loading, error, addGift, updateGift, deleteGift, addCategory } = useGifts()
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [isAddGiftOpen, setIsAddGiftOpen] = useState(false)
+  const [isEditGiftOpen, setIsEditGiftOpen] = useState(false)
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false)
   const [newGift, setNewGift] = useState<{ name: string; image: string; description: string; categoryId: string }>({
     name: '',
@@ -25,6 +27,7 @@ export default function PresentesPage() {
     description: '',
     categoryId: ''
   })
+  const [editingGift, setEditingGift] = useState<{ id: string; name: string; image: string; description: string; categoryId: string } | null>(null)
   const [newCategory, setNewCategory] = useState<{ name: string; color: string }>({
     name: '',
     color: 'bg-gray-500'
@@ -42,6 +45,23 @@ export default function PresentesPage() {
         setIsAddGiftOpen(false)
       } catch (error) {
         console.error('Failed to add gift:', error)
+      }
+    }
+  }
+
+  const handleEditGift = async () => {
+    if (editingGift && editingGift.name && editingGift.categoryId) {
+      try {
+        await updateGift(editingGift.id, {
+          name: editingGift.name,
+          image: editingGift.image,
+          description: editingGift.description,
+          categoryId: editingGift.categoryId
+        })
+        setEditingGift(null)
+        setIsEditGiftOpen(false)
+      } catch (error) {
+        console.error('Failed to update gift:', error)
       }
     }
   }
@@ -64,6 +84,17 @@ export default function PresentesPage() {
     } catch (error) {
       console.error('Failed to delete gift:', error)
     }
+  }
+
+  const openEditDialog = (gift: { id: string; name: string; image?: string; description?: string; categoryId: string }) => {
+    setEditingGift({
+      id: gift.id,
+      name: gift.name,
+      image: gift.image || '',
+      description: gift.description || '',
+      categoryId: gift.categoryId
+    })
+    setIsEditGiftOpen(true)
   }
 
   if (loading) {
@@ -232,6 +263,70 @@ export default function PresentesPage() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+
+            {/* Edit Gift Dialog */}
+            <Dialog open={isEditGiftOpen} onOpenChange={setIsEditGiftOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Editar Presente</DialogTitle>
+                  <DialogDescription>
+                    Edite os detalhes do presente selecionado.
+                  </DialogDescription>
+                </DialogHeader>
+                {editingGift && (
+                  <div className="grid gap-4 py-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="edit-gift-name">Nome do Presente</Label>
+                      <Input
+                        id="edit-gift-name"
+                        value={editingGift.name || ""}
+                        onChange={(e) => setEditingGift({...editingGift, name: e.target.value})}
+                        placeholder="Ex: iPhone 15"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="edit-gift-image">Imagem</Label>
+                      <ImageUpload
+                        onImageChange={(imageUrl) => setEditingGift({...editingGift, image: imageUrl})}
+                        currentImage={editingGift.image}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="edit-gift-category">Categoria</Label>
+                      <Select value={editingGift.categoryId} onValueChange={(value) => setEditingGift({...editingGift, categoryId: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione uma categoria" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="edit-gift-description">Descrição (opcional)</Label>
+                      <Textarea
+                        id="edit-gift-description"
+                        value={editingGift.description || ""}
+                        onChange={(e) => setEditingGift({...editingGift, description: e.target.value})}
+                        placeholder="Descrição do presente..."
+                      />
+                    </div>
+                  </div>
+                )}
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsEditGiftOpen(false)}>
+                    Cancelar
+                  </Button>
+                  <Button onClick={handleEditGift}>
+                    Salvar Alterações
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
@@ -255,13 +350,12 @@ export default function PresentesPage() {
           {filteredGifts.map((gift) => (
             <Card key={gift.id} className="hover:shadow-lg transition-shadow">
               <div className="aspect-square relative overflow-hidden rounded-t-lg">
-                <img
+                <Image
                   src={gift.image}
                   alt={gift.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = "/gifts/default.jpg"
-                  }}
+                  width={1000}
+                  height={1000}
                 />
                 <div className="absolute top-2 right-2">
                   <Badge className={`${gift.category.color} text-white`}>
@@ -277,7 +371,12 @@ export default function PresentesPage() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => openEditDialog(gift)}
+                  >
                     <Edit className="mr-2 h-4 w-4" />
                     Editar
                   </Button>

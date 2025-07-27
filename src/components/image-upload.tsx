@@ -1,7 +1,7 @@
 "use client"
 
-import React from "react"
-import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
+import React, { useState } from "react"
+import { AlertCircleIcon, ImageUpIcon, XIcon, Loader2 } from "lucide-react"
 import { useFileUpload } from "@/hooks/use-file-upload"
 
 interface ImageUploadProps {
@@ -13,6 +13,7 @@ interface ImageUploadProps {
 export default function ImageUpload({ onImageChange, currentImage, className = "" }: ImageUploadProps) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
+  const [isUploading, setIsUploading] = useState(false)
 
   const [
     { files, isDragging, errors },
@@ -36,15 +37,74 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
     onImageChange(url)
   }
 
-  // When a file is uploaded, we'll simulate uploading to a service
-  // In a real app, you'd upload to your server or a service like Cloudinary
-  React.useEffect(() => {
-    if (files[0]?.preview) {
-      // For now, we'll use the preview URL
-      // In production, you'd upload the file and get a real URL
-      handleImageChange(files[0].preview)
+  // Upload file to Bunny
+  const uploadToBunny = async (file: File): Promise<string> => {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const response = await fetch("/api/bunny", {
+      method: "POST",
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to upload image")
     }
-  }, [files])
+
+    const result = await response.json()
+    return result.url
+  }
+
+  // Handle paste events for Ctrl+V functionality
+  const handlePaste = React.useCallback(async (event: ClipboardEvent) => {
+    const items = event.clipboardData?.items
+    if (!items) return
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile()
+        if (file) {
+          setIsUploading(true)
+          try {
+            const uploadedUrl = await uploadToBunny(file)
+            handleImageChange(uploadedUrl)
+          } catch (error) {
+            console.error('Failed to upload pasted image:', error)
+          } finally {
+            setIsUploading(false)
+          }
+          break
+        }
+      }
+    }
+  }, [handleImageChange])
+
+  // Add paste event listener when component mounts
+  React.useEffect(() => {
+    document.addEventListener('paste', handlePaste)
+    return () => {
+      document.removeEventListener('paste', handlePaste)
+    }
+  }, [handlePaste])
+
+  // When a file is uploaded, upload it to Bunny
+  React.useEffect(() => {
+    if (files[0]?.file instanceof File) {
+      const uploadFile = async () => {
+        setIsUploading(true)
+        try {
+          const uploadedUrl = await uploadToBunny(files[0].file as File)
+          handleImageChange(uploadedUrl)
+        } catch (error) {
+          console.error('Failed to upload file:', error)
+        } finally {
+          setIsUploading(false)
+        }
+      }
+      uploadFile()
+    }
+  }, [files, handleImageChange])
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -72,6 +132,11 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
                 alt="Uploaded image"
                 className="size-full object-cover"
               />
+              {isUploading && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin text-white" />
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
@@ -79,18 +144,22 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
                 className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border"
                 aria-hidden="true"
               >
-                <ImageUpIcon className="size-4 opacity-60" />
+                {isUploading ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <ImageUpIcon className="size-4 opacity-60" />
+                )}
               </div>
               <p className="mb-1.5 text-sm font-medium">
-                Arraste uma imagem aqui ou clique para selecionar
+                {isUploading ? "Enviando imagem..." : "Arraste uma imagem aqui ou clique para selecionar"}
               </p>
               <p className="text-muted-foreground text-xs">
-                Tamanho máximo: {maxSizeMB}MB
+                Tamanho máximo: {maxSizeMB}MB • Ctrl+V para colar
               </p>
             </div>
           )}
         </div>
-        {previewUrl && (
+        {previewUrl && !isUploading && (
           <div className="absolute top-4 right-4">
             <button
               type="button"

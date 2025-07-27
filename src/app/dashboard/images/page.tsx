@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useRef, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PageHeader } from "@/components/page-header"
 import { toast } from "sonner"
-import { Upload, Image as ImageIcon, Trash2, Download } from "lucide-react"
+import { Image as ImageIcon, Trash2, Download } from "lucide-react"
+import ImageUpload from "@/components/image-upload"
 
 interface Image {
   id: string
@@ -17,8 +18,7 @@ interface Image {
 export default function ImagesPage() {
   const [images, setImages] = useState<Image[]>([])
   const [isUploading, setIsUploading] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string>("")
 
   const fetchImages = useCallback(async () => {
     try {
@@ -36,83 +36,39 @@ export default function ImagesPage() {
     fetchImages()
   }, [fetchImages])
 
-  const handleFileUpload = async (files: FileList | null) => {
-    if (!files || files.length === 0) return
+  const handleImageUpload = async (imageUrl: string) => {
+    if (!imageUrl) return
 
     setIsUploading(true)
-    const uploadPromises = Array.from(files).map(async (file) => {
-      const formData = new FormData()
-      formData.append("file", file)
+    try {
+      // Extract filename from URL or generate one
+      const fileName = imageUrl.split('/').pop()?.split('?')[0] || `image-${Date.now()}.avif`
+      
+      // Save to database
+      const dbResponse = await fetch("/api/images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: fileName,
+          url: imageUrl,
+        }),
+      })
 
-      try {
-        const response = await fetch("/api/bunny", {
-          method: "POST",
-          body: formData,
-        })
-
-        if (response.ok) {
-          const result = await response.json()
-          
-          // Save to database
-          const dbResponse = await fetch("/api/images", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: file.name,
-              url: result.url,
-            }),
-          })
-
-          if (dbResponse.ok) {
-            return { success: true, data: await dbResponse.json() }
-          } else {
-            return { success: false, error: "Erro ao salvar no banco de dados" }
-          }
-        } else {
-          return { success: false, error: "Erro no upload" }
-        }
-      } catch (error) {
-        console.error("Erro no upload:", error)
-        return { success: false, error: "Erro no upload" }
+      if (dbResponse.ok) {
+        toast.success("Imagem enviada com sucesso!")
+        setUploadedImageUrl("") // Clear the input
+        fetchImages() // Refresh the list
+      } else {
+        toast.error("Erro ao salvar no banco de dados")
       }
-    })
-
-    const results = await Promise.all(uploadPromises)
-    const successCount = results.filter(r => r.success).length
-    const errorCount = results.length - successCount
-
-    if (successCount > 0) {
-      toast.success(`${successCount} imagem(ns) enviada(s) com sucesso!`)
-      fetchImages()
+    } catch (error) {
+      console.error("Erro ao salvar imagem:", error)
+      toast.error("Erro ao salvar imagem")
+    } finally {
+      setIsUploading(false)
     }
-    
-    if (errorCount > 0) {
-      toast.error(`${errorCount} imagem(ns) falharam no upload`)
-    }
-
-    setIsUploading(false)
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    handleFileUpload(e.dataTransfer.files)
-  }
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleFileUpload(e.target.files)
   }
 
   const handleDeleteImage = async (imageId: string) => {
@@ -138,24 +94,7 @@ export default function ImagesPage() {
       <PageHeader
         title="Galeria de Fotos"
         subtitle="Gerencie as fotos da festa de 15 anos da Carol."
-      >
-        <Button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={isUploading}
-          className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
-        >
-          <Upload className="mr-2 h-4 w-4" />
-          {isUploading ? "Enviando..." : "Enviar Fotos"}
-        </Button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-      </PageHeader>
+      />
 
       <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
         {/* Upload Area */}
@@ -166,37 +105,21 @@ export default function ImagesPage() {
               Upload de Fotos
             </CardTitle>
             <CardDescription>
-              Arraste e solte as fotos aqui ou clique para selecionar
+              Arraste e solte as fotos aqui, clique para selecionar ou use Ctrl+V para colar
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              className={`
-                border-2 border-dashed rounded-lg p-8 text-center transition-colors
-                ${isDragging 
-                  ? "border-pink-500 bg-pink-50" 
-                  : "border-gray-300 hover:border-pink-400 hover:bg-gray-50"
-                }
-                ${isUploading ? "opacity-50 pointer-events-none" : ""}
-              `}
-            >
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <p className="text-lg font-medium text-gray-900 mb-2">
-                {isDragging ? "Solte as fotos aqui" : "Arraste e solte as fotos aqui"}
-              </p>
-              <p className="text-sm text-gray-500">
-                ou clique para selecionar arquivos
-              </p>
-              {isUploading && (
-                <div className="mt-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600 mx-auto"></div>
-                  <p className="text-sm text-gray-500 mt-2">Enviando fotos...</p>
-                </div>
-              )}
-            </div>
+            <ImageUpload
+              onImageChange={handleImageUpload}
+              currentImage={uploadedImageUrl}
+              className="w-full"
+            />
+            {isUploading && (
+              <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-pink-600"></div>
+                <span>Salvando imagem...</span>
+              </div>
+            )}
           </CardContent>
         </Card>
 

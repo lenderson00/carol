@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/page-header"
 import DashboardStats from "@/components/dashboard-stats"
 import { useAnalytics } from "@/hooks/use-analytics"
 import Link from "next/link"
-import { Image, Users, Calendar, Heart, ArrowRight, Gift } from "lucide-react"
+import { Image, Users, Heart, ArrowRight, Gift } from "lucide-react"
 
 export default function DashboardPage() {
   useAnalytics()
@@ -104,36 +104,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Informações da Festa */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
-                  <Heart className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle>Informações da Festa</CardTitle>
-                  <CardDescription>Detalhes do evento</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-purple-600" />
-                  <span>15 de Março, 2025</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4 text-purple-600" />
-                  <span>20:00 às 02:00</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Users className="h-4 w-4 text-purple-600" />
-                  <span>Espaço de Eventos</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+       
         </div>
 
         {/* Quick Stats */}

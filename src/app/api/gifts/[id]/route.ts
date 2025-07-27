@@ -20,7 +20,7 @@ export async function PUT(
       where: { id: params.id },
       data: {
         name,
-        image: image || '/gifts/default.jpg',
+        image: image || '',
         description,
         categoryId,
       },

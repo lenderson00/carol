@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Gift, Heart } from "lucide-react"
 import Link from "next/link"
 import Navbar from "@/components/navbar"
+import Image from "next/image"
 
 async function getGifts() {
   try {
@@ -61,10 +62,10 @@ export default async function ListaPage() {
       <Navbar />
       
       {/* Main Content */}
-      <div className="pt-20 pb-16">
+      <div className="mt-12 pt-16 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 min-h-[50vh]">
             <div className="flex items-center justify-center mb-6">
               <Link href="/">
                 <Button variant="ghost" size="sm" className="text-white hover:text-primary hover:bg-white/10">
@@ -112,13 +113,12 @@ export default async function ListaPage() {
                   {category.gifts.map((gift) => (
                     <Card key={gift.id} className="bg-white/10 border-white/20 hover:bg-white/20 transition-colors">
                       <div className="aspect-square relative overflow-hidden rounded-t-lg">
-                        <img
-                          src={gift.image}
+                        <Image
+                          src={gift.image || ""}
                           alt={gift.name}
                           className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = "/gifts/default.jpg"
-                          }}
+                          width={1000}
+                          height={1000}
                         />
                       </div>
                       <CardHeader className="pb-2">
