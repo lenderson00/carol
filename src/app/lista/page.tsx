@@ -113,13 +113,15 @@ export default async function ListaPage() {
                   {category.gifts.map((gift) => (
                     <Card key={gift.id} className="bg-white/10 border-white/20 hover:bg-white/20 transition-colors">
                       <div className="aspect-square relative overflow-hidden rounded-t-lg">
+                        {gift.image && (
                         <Image
                           src={gift.image || ""}
                           alt={gift.name}
                           className="w-full h-full object-cover"
-                          width={1000}
-                          height={1000}
-                        />
+                            width={1000}
+                            height={1000}
+                          />
+                        )}
                       </div>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-lg text-white">{gift.name}</CardTitle>

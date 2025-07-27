@@ -226,6 +226,7 @@ export default function PresentesPage() {
                     <ImageUpload
                       onImageChange={(imageUrl) => setNewGift({...newGift, image: imageUrl})}
                       currentImage={newGift.image}
+                      saveToGallery={false}
                     />
                   </div>
                   <div className="grid gap-2">
@@ -289,6 +290,7 @@ export default function PresentesPage() {
                       <ImageUpload
                         onImageChange={(imageUrl) => setEditingGift({...editingGift, image: imageUrl})}
                         currentImage={editingGift.image}
+                        saveToGallery={false}
                       />
                     </div>
                     <div className="grid gap-2">
@@ -350,6 +352,7 @@ export default function PresentesPage() {
           {filteredGifts.map((gift) => (
             <Card key={gift.id} className="hover:shadow-lg transition-shadow">
               <div className="aspect-square relative overflow-hidden rounded-t-lg">
+                {gift.image && (    
                 <Image
                   src={gift.image}
                   alt={gift.name}
@@ -357,6 +360,7 @@ export default function PresentesPage() {
                   width={1000}
                   height={1000}
                 />
+                )}
                 <div className="absolute top-2 right-2">
                   <Badge className={`${gift.category.color} text-white`}>
                     {gift.category.name}

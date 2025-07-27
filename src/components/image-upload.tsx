@@ -8,12 +8,14 @@ interface ImageUploadProps {
   onImageChange: (imageUrl: string) => void
   currentImage?: string
   className?: string
+  saveToGallery?: boolean
 }
 
-export default function ImageUpload({ onImageChange, currentImage, className = "" }: ImageUploadProps) {
+export default function ImageUpload({ onImageChange, currentImage, className = "", saveToGallery = true }: ImageUploadProps) {
   const maxSizeMB = 5
   const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
   const [isUploading, setIsUploading] = useState(false)
+  const [isProcessingPaste, setIsProcessingPaste] = useState(false)
 
   const [
     { files, isDragging, errors },
@@ -37,6 +39,35 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
     onImageChange(url)
   }
 
+  // Save image to gallery database
+  const saveToGalleryDB = async (imageUrl: string) => {
+    if (!saveToGallery) return
+
+    try {
+      // Generate unique filename with timestamp and random string
+      const timestamp = Date.now()
+      const randomString = Math.random().toString(36).substring(2, 8)
+      const fileName = `carol-15-anos-${timestamp}-${randomString}.avif`
+      
+      const response = await fetch("/api/images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: fileName,
+          url: imageUrl,
+        }),
+      })
+
+      if (!response.ok) {
+        console.error("Failed to save to gallery")
+      }
+    } catch (error) {
+      console.error("Error saving to gallery:", error)
+    }
+  }
+
   // Upload file to Bunny
   const uploadToBunny = async (file: File): Promise<string> => {
     const formData = new FormData()
@@ -57,6 +88,8 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
 
   // Handle paste events for Ctrl+V functionality
   const handlePaste = React.useCallback(async (event: ClipboardEvent) => {
+    if (isUploading || isProcessingPaste) return
+    
     const items = event.clipboardData?.items
     if (!items) return
 
@@ -65,20 +98,27 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
       if (item.type.indexOf('image') !== -1) {
         const file = item.getAsFile()
         if (file) {
+          setIsProcessingPaste(true)
           setIsUploading(true)
           try {
             const uploadedUrl = await uploadToBunny(file)
             handleImageChange(uploadedUrl)
+            await saveToGalleryDB(uploadedUrl)
+            // Clear the component after successful upload
+            setTimeout(() => {
+              handleImageChange('')
+            }, 100)
           } catch (error) {
             console.error('Failed to upload pasted image:', error)
           } finally {
             setIsUploading(false)
+            setIsProcessingPaste(false)
           }
           break
         }
       }
     }
-  }, [handleImageChange, uploadToBunny])
+  }, [handleImageChange, uploadToBunny, saveToGalleryDB, isUploading, isProcessingPaste])
 
   // Add paste event listener when component mounts
   React.useEffect(() => {
@@ -88,16 +128,21 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
     }
   }, [handlePaste])
 
-  // When a file is uploaded, upload it to Bunny
+  // When a file is uploaded, upload it to Bunny (but not if we're processing paste)
   React.useEffect(() => {
-    if (files[0]?.file instanceof File) {
+    if (files[0]?.file instanceof File && !isProcessingPaste && !isUploading) {
       const uploadFile = async () => {
         setIsUploading(true)
         try {
           const uploadedUrl = await uploadToBunny(files[0].file as File)
           handleImageChange(uploadedUrl)
+          await saveToGalleryDB(uploadedUrl)
           // Clear the file after successful upload
           removeFile(files[0].id)
+          // Clear the component after successful upload
+          setTimeout(() => {
+            handleImageChange('')
+          }, 100)
         } catch (error) {
           console.error('Failed to upload file:', error)
         } finally {
@@ -106,7 +151,7 @@ export default function ImageUpload({ onImageChange, currentImage, className = "
       }
       uploadFile()
     }
-  }, [files, handleImageChange, removeFile])
+  }, [files, handleImageChange, removeFile, saveToGalleryDB, isProcessingPaste, isUploading])
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
