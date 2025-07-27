@@ -74,6 +74,7 @@ export default function ImagesPage() {
           return { success: false, error: "Erro no upload" }
         }
       } catch (error) {
+        console.error("Erro no upload:", error)
         return { success: false, error: "Erro no upload" }
       }
     })
@@ -127,6 +128,7 @@ export default function ImagesPage() {
         toast.error("Erro ao deletar imagem")
       }
     } catch (error) {
+      console.error("Erro ao deletar imagem:", error)
       toast.error("Erro ao deletar imagem")
     }
   }
