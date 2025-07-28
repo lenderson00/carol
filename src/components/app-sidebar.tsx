@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MapPin, Gift, Home, Image } from "lucide-react"
+import { MapPin, Gift, Home, Image, ExternalLink } from "lucide-react"
 import { usePathname } from "next/navigation"
 
 import { NavMain } from "@/components/nav-main"
@@ -18,6 +18,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   // Navigation data with dynamic active state
   const navMain = [
+    {
+      title: "Visitar Página Inicial",
+      url: "/",
+      icon: ExternalLink,
+      isActive: pathname === "/",
+      items: [],
+    },
     {
       title: "Dashboard",
       url: "/dashboard",
