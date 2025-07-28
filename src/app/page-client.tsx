@@ -12,6 +12,7 @@ import Navbar from "@/components/navbar"
 import Snowfall from 'react-snowfall'
 import { BlurFade } from "@/components/magicui/blur-fade"
 import { useAnalytics } from "@/hooks/use-analytics"
+import { GoogleMapsComponent } from "@/components/google-maps"
 
 interface Image {
   id: string
@@ -128,7 +129,7 @@ export default function HomeClient({ images }: HomeClientProps) {
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-white text-lg">Horário</p>
-                        <p className="text-white/80">21h às 02h</p>
+                        <p className="text-white/80">21h</p>
                       </div>
                     </div>
                   </div>
@@ -144,8 +145,6 @@ export default function HomeClient({ images }: HomeClientProps) {
                       <div className="text-left">
                         <p className="font-semibold text-white text-lg">Local</p>
                         <p className="text-white/80">Casa de Festa Royalle</p>
-                        <p className="text-white/80">Av. Brás de Pina, 1867</p>
-                        <p className="text-white/80 text-sm">Vista Alegre, Rio de Janeiro</p>
                       </div>
                     </div>
                   </div>
@@ -314,6 +313,36 @@ export default function HomeClient({ images }: HomeClientProps) {
                 </CardContent>
               </Card>
             </div>
+          </BlurFade>
+        </div>
+      </section>
+
+      {/* Google Maps Section */}
+      <section className="relative z-20 py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <BlurFade delay={0.1}>
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/20">
+                <MapPin className="h-5 w-5 text-primary" />
+                <span className="text-white/90 font-medium">Localização</span>
+              </div>
+            </BlurFade>
+            
+            <BlurFade delay={0.2}>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Como Chegar
+              </h2>
+            </BlurFade>
+            
+            <BlurFade delay={0.3}>
+              <p className="text-white/80 text-xl max-w-3xl mx-auto leading-relaxed">
+                Veja a localização exata da Casa de Festa Royalle e planeje sua chegada
+              </p>
+            </BlurFade>
+          </div>
+
+          <BlurFade delay={0.4}>
+            <GoogleMapsComponent />
           </BlurFade>
         </div>
       </section>
