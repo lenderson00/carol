@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const gift = await prisma.gift.create({
       data: {
         name,
-        image: image || '/gifts/default.jpg',
+        image: image || '',
         description,
         categoryId,
       },
