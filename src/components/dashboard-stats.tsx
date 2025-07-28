@@ -11,16 +11,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ArrowDown, ArrowUp, MoreHorizontal, Settings, Share2, Trash, TriangleAlert, Pin, Users, CheckCircle, XCircle, Eye } from "lucide-react"
+import { ArrowDown, ArrowUp, MoreHorizontal, Settings, Share2, Trash, TriangleAlert, Pin, Users, CheckCircle, XCircle, Home, List } from "lucide-react"
 
 interface DashboardStats {
   totalInvites: number
   confirmedInvites: number
   rejectedInvites: number
   pendingInvites: number
-  dashboardPageViews: number
+  homePageViews: number
+  listPageViews: number
   lastMonthInvites: number
-  lastMonthViews: number
+  lastMonthHomeViews: number
+  lastMonthListViews: number
 }
 
 function formatNumber(n: number) {
@@ -35,9 +37,11 @@ export default function DashboardStats() {
     confirmedInvites: 0,
     rejectedInvites: 0,
     pendingInvites: 0,
-    dashboardPageViews: 0,
+    homePageViews: 0,
+    listPageViews: 0,
     lastMonthInvites: 0,
-    lastMonthViews: 0
+    lastMonthHomeViews: 0,
+    lastMonthListViews: 0
   })
 
   useEffect(() => {
@@ -91,15 +95,26 @@ export default function DashboardStats() {
       icon: XCircle
     },
     {
-      title: 'Visualizações do Dashboard',
-      value: stats.dashboardPageViews,
-      delta: stats.dashboardPageViews > stats.lastMonthViews ? 
-        ((stats.dashboardPageViews - stats.lastMonthViews) / stats.lastMonthViews * 100) : 0,
-      lastMonth: stats.lastMonthViews,
-      positive: stats.dashboardPageViews >= stats.lastMonthViews,
+      title: 'Visualizações da Página Principal',
+      value: stats.homePageViews,
+      delta: stats.homePageViews > stats.lastMonthHomeViews ? 
+        ((stats.homePageViews - stats.lastMonthHomeViews) / stats.lastMonthHomeViews * 100) : 0,
+      lastMonth: stats.lastMonthHomeViews,
+      positive: stats.homePageViews >= stats.lastMonthHomeViews,
       prefix: '',
       suffix: '',
-      icon: Eye
+      icon: Home
+    },
+    {
+      title: 'Visualizações da Lista de Presentes',
+      value: stats.listPageViews,
+      delta: stats.listPageViews > stats.lastMonthListViews ? 
+        ((stats.listPageViews - stats.lastMonthListViews) / stats.lastMonthListViews * 100) : 0,
+      lastMonth: stats.lastMonthListViews,
+      positive: stats.listPageViews >= stats.lastMonthListViews,
+      prefix: '',
+      suffix: '',
+      icon: List
     }
   ]
 

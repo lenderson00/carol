@@ -5,13 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PageHeader } from "@/components/page-header"
 import DashboardStats from "@/components/dashboard-stats"
-import { useAnalytics } from "@/hooks/use-analytics"
 import Link from "next/link"
 import { Image, Users, Heart, ArrowRight, Gift } from "lucide-react"
 
 export default function DashboardPage() {
-  useAnalytics()
-
   return (
     <>
       <PageHeader

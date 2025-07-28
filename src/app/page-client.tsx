@@ -12,6 +12,7 @@ import { PhotoGallery } from "@/components/photo-gallery"
 import Navbar from "@/components/navbar"
 import Snowfall from 'react-snowfall'
 import { BlurFade } from "@/components/magicui/blur-fade"
+import { useAnalytics } from "@/hooks/use-analytics"
 
 interface Image {
   id: string
@@ -26,6 +27,8 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ images }: HomeClientProps) {
+  useAnalytics()
+  
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     name: "",

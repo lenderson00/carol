@@ -16,8 +16,10 @@ export async function GET() {
       rejectedInvites,
       pendingInvites,
       lastMonthInvites,
-      dashboardPageViews,
-      lastMonthViews
+      homePageViews,
+      listPageViews,
+      lastMonthHomeViews,
+      lastMonthListViews
     ] = await Promise.all([
       // Total invites
       prisma.inviteConfirmation.count(),
@@ -47,15 +49,31 @@ export async function GET() {
         }
       }),
 
-      // Dashboard page views
+      // Home page views
       prisma.pageAnalytics.count({
-        where: { page: 'dashboard' }
+        where: { page: 'home' }
       }),
 
-      // Last month dashboard views
+      // List page views
+      prisma.pageAnalytics.count({
+        where: { page: 'list' }
+      }),
+
+      // Last month home views
       prisma.pageAnalytics.count({
         where: {
-          page: 'dashboard',
+          page: 'home',
+          createdAt: {
+            gte: lastMonth,
+            lt: new Date(now.getFullYear(), now.getMonth(), 1)
+          }
+        }
+      }),
+
+      // Last month list views
+      prisma.pageAnalytics.count({
+        where: {
+          page: 'list',
           createdAt: {
             gte: lastMonth,
             lt: new Date(now.getFullYear(), now.getMonth(), 1)
@@ -69,9 +87,11 @@ export async function GET() {
       confirmedInvites,
       rejectedInvites,
       pendingInvites,
-      dashboardPageViews,
+      homePageViews,
+      listPageViews,
       lastMonthInvites,
-      lastMonthViews
+      lastMonthHomeViews,
+      lastMonthListViews
     }
 
     return NextResponse.json(stats)

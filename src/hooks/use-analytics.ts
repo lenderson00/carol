@@ -7,15 +7,15 @@ export function useAnalytics() {
   useEffect(() => {
     const trackPageView = async () => {
       try {
-        // Only track dashboard page visits
-        if (!pathname.includes('/dashboard')) {
+        // Only track home page ("/") and list page ("/lista") visits
+        if (pathname === '/' || pathname === '/lista') {
           await fetch('/api/analytics/track', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              page: 'dashboard',
+              page: pathname === '/' ? 'home' : 'list',
               userAgent: navigator.userAgent,
               referrer: document.referrer
             })
