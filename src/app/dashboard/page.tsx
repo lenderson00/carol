@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PageHeader } from "@/components/page-header"
 import DashboardStats from "@/components/dashboard-stats"
 import Link from "next/link"
-import { Image, Users, Heart, ArrowRight, Gift } from "lucide-react"
+import { Image, Users, Heart, Gift } from "lucide-react"
 
 export default function DashboardPage() {
   return (
@@ -21,85 +21,6 @@ export default function DashboardPage() {
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-4">Estatísticas da Festa</h2>
           <DashboardStats />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Galeria de Fotos */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-pink-500 rounded-lg">
-                  <Image className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle>Galeria de Fotos</CardTitle>
-                  <CardDescription>Gerencie as fotos da festa</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Faça upload, organize e compartilhe as fotos da festa de 15 anos da Ana Carolina.
-              </p>
-              <Link href="/dashboard/images">
-                <Button className="w-full bg-pink-600 hover:bg-pink-700">
-                  Gerenciar Fotos
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Confirmações */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500 rounded-lg">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle>Confirmações</CardTitle>
-                  <CardDescription>Gerencie as confirmações de presença</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Visualize e gerencie todas as confirmações de presença dos convidados.
-              </p>
-              <Link href="/dashboard/confirmacoes">
-                <Button className="w-full bg-green-600 hover:bg-green-700">
-                  Ver Confirmações
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Lista de Presentes */}
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-500 rounded-lg">
-                  <Gift className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle>Lista de Presentes</CardTitle>
-                  <CardDescription>Gerencie os presentes da festa</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Organize e gerencie a lista de presentes com categorias e imagens.
-              </p>
-              <Link href="/dashboard/presentes">
-                <Button className="w-full bg-orange-600 hover:bg-orange-700">
-                  Gerenciar Presentes
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Quick Stats */}
