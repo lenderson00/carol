@@ -42,13 +42,6 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
                 alt={image.name}
                 className="h-full w-full object-cover transition-transform group-hover:scale-105"
               />
-              
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="text-white text-sm font-medium">{image.name}</p>
-                </div>
-              </div>
             </div>
           ))
         ) : (
@@ -61,7 +54,7 @@ export function PhotoGallery({ images }: PhotoGalleryProps) {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
                   <Camera className="mx-auto h-8 w-8 text-primary mb-2" />
-                  <p className="text-white text-sm">Carol</p>
+                  <p className="text-white text-sm">Ana Carolina</p>
                   <p className="text-white/60 text-xs">Foto {index + 1}</p>
                 </div>
               </div>

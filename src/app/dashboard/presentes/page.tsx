@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { PageHeader } from "@/components/page-header"
-import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -18,6 +17,7 @@ import Image from "next/image"
 export default function PresentesPage() {
   const { gifts, categories, loading, error, addGift, updateGift, deleteGift, addCategory } = useGifts()
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [dialogCategory, setDialogCategory] = useState<string>("")
   const [isAddGiftOpen, setIsAddGiftOpen] = useState(false)
   const [isEditGiftOpen, setIsEditGiftOpen] = useState(false)
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false)
@@ -124,7 +124,7 @@ export default function PresentesPage() {
         subtitle="Gerencie os presentes da festa de 15 anos da Carol"
       />
       
-      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
+      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6 max-w-7xl mx-auto w-full">
         {/* Header with Actions */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
           <div className="flex gap-2">
@@ -197,7 +197,13 @@ export default function PresentesPage() {
               </DialogContent>
             </Dialog>
 
-            <Dialog open={isAddGiftOpen} onOpenChange={setIsAddGiftOpen}>
+            <Dialog open={isAddGiftOpen} onOpenChange={(open) => {
+              setIsAddGiftOpen(open)
+              if (!open) {
+                setDialogCategory("")
+                setNewGift({ name: "", description: "", image: "", categoryId: "" })
+              }
+            }}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
@@ -231,7 +237,13 @@ export default function PresentesPage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="gift-category">Categoria</Label>
-                    <Select value={newGift.categoryId} onValueChange={(value) => setNewGift({...newGift, categoryId: value})}>
+                    <Select 
+                      value={dialogCategory || newGift.categoryId} 
+                      onValueChange={(value) => {
+                        setDialogCategory(value)
+                        setNewGift({...newGift, categoryId: value})
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
@@ -255,7 +267,11 @@ export default function PresentesPage() {
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setIsAddGiftOpen(false)}>
+                  <Button variant="outline" onClick={() => {
+                    setIsAddGiftOpen(false)
+                    setDialogCategory("")
+                    setNewGift({ name: "", description: "", image: "", categoryId: "" })
+                  }}>
                     Cancelar
                   </Button>
                   <Button onClick={handleAddGift}>
@@ -333,69 +349,104 @@ export default function PresentesPage() {
         </div>
 
         {/* Categories Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="flex flex-wrap gap-2 mb-6">
           {categories.map((category) => (
-            <Card key={category.id} className="cursor-pointer hover:shadow-md transition-shadow">
-              <CardContent className="p-4 text-center">
-                <div className={`w-8 h-8 rounded-full ${category.color} mx-auto mb-2`}></div>
-                <p className="text-sm font-medium">{category.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {category._count.gifts} presentes
-                </p>
-              </CardContent>
-            </Card>
+            <div key={category.id} className="flex items-center gap-2 px-3 py-2 bg-muted rounded-lg border">
+              <div className={`w-3 h-3 rounded-full ${category.color}`}></div>
+              <span className="text-sm font-medium">{category.name}</span>
+              <span className="text-xs text-muted-foreground">({category._count.gifts})</span>
+            </div>
           ))}
         </div>
 
-        {/* Gifts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredGifts.map((gift) => (
-            <Card key={gift.id} className="hover:shadow-lg transition-shadow">
-              <div className="aspect-square relative overflow-hidden rounded-t-lg">
-                {gift.image && (    
-                <Image
-                  src={gift.image}
-                  alt={gift.name}
-                  className="w-full h-full object-cover"
-                  width={1000}
-                  height={1000}
-                />
-                )}
-                <div className="absolute top-2 right-2">
-                  <Badge className={`${gift.category.color} text-white`}>
-                    {gift.category.name}
-                  </Badge>
+        {/* Gifts by Category */}
+        <div className="space-y-6">
+          {categories.map((category) => {
+            const categoryGifts = filteredGifts.filter(gift => gift.categoryId === category.id)
+            if (categoryGifts.length === 0) return null
+            
+            return (
+              <div key={category.id} className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className={`w-4 h-4 rounded-full ${category.color}`}></div>
+                  <h3 className="text-lg font-semibold">{category.name}</h3>
+                  <span className="text-sm text-muted-foreground">({categoryGifts.length} itens)</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8 w-8 p-0 ml-auto"
+                    onClick={() => {
+                      setDialogCategory(category.id)
+                      setIsAddGiftOpen(true)
+                    }}
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+                  {categoryGifts.map((gift) => (
+                    <Card key={gift.id} className="group hover:shadow-md transition-all duration-200 cursor-pointer py-0 overflow-hidden gap-0">
+                      <div className="relative">
+                        <div className="aspect-square overflow-hidden rounded-t-lg bg-muted">
+                          {gift.image ? (
+                            <Image
+                              src={gift.image}
+                              alt={gift.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              width={400}
+                              height={400}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Gift className="h-10 w-10 text-muted-foreground" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="h-8 w-8 p-0 bg-background/80 backdrop-blur-sm"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openEditDialog(gift)
+                            }}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            className="h-8 w-8 p-0 bg-background/80 backdrop-blur-sm text-red-500 hover:text-red-600"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDeleteGift(gift.id)
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="text-sm font-medium truncate" title={gift.name}>
+                          {gift.name}
+                        </h3>
+                        {gift.description && (
+                          <p className="text-xs text-muted-foreground truncate mt-1" title={gift.description}>
+                            {gift.description}
+                          </p>
+                        )}
+                        <div className="flex items-center justify-between mt-2">
+                          <span className="text-xs text-muted-foreground">{category.name}</span>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
               </div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg">{gift.name}</CardTitle>
-                {gift.description && (
-                  <CardDescription>{gift.description}</CardDescription>
-                )}
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex-1"
-                    onClick={() => openEditDialog(gift)}
-                  >
-                    <Edit className="mr-2 h-4 w-4" />
-                    Editar
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => handleDeleteGift(gift.id)}
-                    className="text-red-600 hover:text-red-700"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+            )
+          })}
         </div>
 
         {filteredGifts.length === 0 && (

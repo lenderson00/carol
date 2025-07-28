@@ -45,7 +45,7 @@ export default function Navbar() {
           >
             <Link href="/" className="flex items-center space-x-2 text-white hover:text-primary transition-colors">
               <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="font-semibold text-base sm:text-lg">Carol 15 Anos</span>
+              <span className="font-semibold text-base sm:text-lg">Ana Carolina 15 Anos</span>
             </Link>
           </motion.div>
 

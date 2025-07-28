@@ -2,16 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ArrowDown, ArrowUp, MoreHorizontal, Settings, Share2, Trash, TriangleAlert, Pin, Users, CheckCircle, XCircle, Home, List } from "lucide-react"
+import { ArrowDown, ArrowUp, CheckCircle, XCircle, Home, List } from "lucide-react"
 
 interface DashboardStats {
   totalInvites: number
@@ -61,17 +53,6 @@ export default function DashboardStats() {
   }, [])
 
   const statsData = [
-    {
-      title: 'Total de Convites',
-      value: stats.totalInvites,
-      delta: stats.totalInvites > stats.lastMonthInvites ? 
-        ((stats.totalInvites - stats.lastMonthInvites) / stats.lastMonthInvites * 100) : 0,
-      lastMonth: stats.lastMonthInvites,
-      positive: stats.totalInvites >= stats.lastMonthInvites,
-      prefix: '',
-      suffix: '',
-      icon: Users
-    },
     {
       title: 'Confirmados',
       value: stats.confirmedInvites,
@@ -127,38 +108,6 @@ export default function DashboardStats() {
               <stat.icon className="h-4 w-4" />
               {stat.title}
             </CardTitle>
-            <div className="flex justify-end">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" side="bottom">
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Configurações
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <TriangleAlert className="mr-2 h-4 w-4" />
-                    Adicionar Alerta
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Pin className="mr-2 h-4 w-4" />
-                    Fixar no Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Share2 className="mr-2 h-4 w-4" />
-                    Compartilhar
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem variant="destructive">
-                    <Trash className="mr-2 h-4 w-4" />
-                    Remover
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
           </CardHeader>
           <CardContent className="space-y-2.5">
             <div className="flex items-center gap-2.5">

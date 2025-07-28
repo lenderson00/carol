@@ -146,7 +146,7 @@ export default function ListaClient({ giftsByCategory, categories }: ListaClient
       <footer className="bg-black/20 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-lg">
-            Com muito carinho, família da Carol
+            A família da Ana Carolina lhe envia esse convite com muito carinho
           </p>
           <p className="text-white/60 mt-2">
             Uma celebração especial dos 15 anos - Baile de Inverno

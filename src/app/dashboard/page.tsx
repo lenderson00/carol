@@ -16,7 +16,7 @@ export default function DashboardPage() {
         subtitle="Gerencie a festa de 15 anos da Carol"
       />
       
-      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
+      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6 max-w-7xl mx-auto">
         {/* Dashboard Statistics */}
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-4">Estatísticas da Festa</h2>
@@ -27,7 +27,7 @@ export default function DashboardPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg">
+                <div className="p-2 bg-pink-500 rounded-lg">
                   <Image className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -38,10 +38,10 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
-                Faça upload, organize e compartilhe as fotos da festa de 15 anos da Carol.
+                Faça upload, organize e compartilhe as fotos da festa de 15 anos da Ana Carolina.
               </p>
               <Link href="/dashboard/images">
-                <Button className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700">
+                <Button className="w-full bg-pink-600 hover:bg-pink-700">
                   Gerenciar Fotos
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -53,7 +53,7 @@ export default function DashboardPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg">
+                <div className="p-2 bg-green-500 rounded-lg">
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -67,7 +67,7 @@ export default function DashboardPage() {
                 Visualize e gerencie todas as confirmações de presença dos convidados.
               </p>
               <Link href="/dashboard/confirmacoes">
-                <Button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
+                <Button className="w-full bg-green-600 hover:bg-green-700">
                   Ver Confirmações
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -79,7 +79,7 @@ export default function DashboardPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg">
+                <div className="p-2 bg-orange-500 rounded-lg">
                   <Gift className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -93,15 +93,13 @@ export default function DashboardPage() {
                 Organize e gerencie a lista de presentes com categorias e imagens.
               </p>
               <Link href="/dashboard/presentes">
-                <Button className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700">
+                <Button className="w-full bg-orange-600 hover:bg-orange-700">
                   Gerenciar Presentes
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </CardContent>
           </Card>
-
-       
         </div>
 
         {/* Quick Stats */}
@@ -138,7 +136,7 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 <Link href="/" className="block">
                   <Button variant="outline" className="w-full justify-start">
-                    <Heart className="mr-2 h-4 w-4" />
+                  <Heart className="mr-2 h-4 w-4" />
                     Página Principal
                   </Button>
                 </Link>

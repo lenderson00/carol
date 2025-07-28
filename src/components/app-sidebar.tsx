@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { MapPin, Gift, Home, Image } from "lucide-react"
+import { usePathname } from "next/navigation"
 
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
@@ -12,54 +13,54 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// Simplified data for the property management application
-const data = {
-  user: {
-    name: "Niver da Carol",
-    username: "Administrador",
-    avatar: "/avatars/shadcn.jpg", // Placeholder avatar
-  },
-  navMain: [
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+
+  // Navigation data with dynamic active state
+  const navMain = [
     {
       title: "Dashboard",
       url: "/dashboard",
       icon: Home,
-      isActive: true,
-      items: [], // No sub-items for a cleaner look
+      isActive: pathname === "/dashboard",
+      items: [],
     },
     {
       title: "Imagens",
       url: "/dashboard/images",
       icon: Image,
-      isActive: true,
-      items: [], // No sub-items for a cleaner look
+      isActive: pathname === "/dashboard/images",
+      items: [],
     },
     {
       title: "Confirmações",
       url: "/dashboard/confirmacoes",
       icon: MapPin,
-      isActive: false,
+      isActive: pathname === "/dashboard/confirmacoes",
       items: [],
     },
     {
       title: "Presentes",
       url: "/dashboard/presentes",
       icon: Gift,
-      isActive: false,
+      isActive: pathname === "/dashboard/presentes",
       items: [],
     },
-  ],
-}
+  ]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const user = {
+    name: "Niver da Ana Carolina",
+    username: "Administrador",
+    avatar: "/avatars/shadcn.jpg",
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* The header is removed for a cleaner look as it's not needed */}
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

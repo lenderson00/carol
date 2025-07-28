@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Carol - 15 Anos | Baile de Inverno",
-  description: "Baile de Inverno - Carol 15 Anos. Uma noite mágica de festa, dança e momentos inesquecíveis. 21/11/2025 - Av. Brás de Pina, 1867 - Vista Alegre, Rio de Janeiro.",
+  title: "Ana Carolina - 15 Anos | Baile de Inverno",
+  description: "Baile de Inverno - Ana Carolina 15 Anos. Uma noite mágica de festa, dança e momentos inesquecíveis. 21/11/2025 - Casa de Festa Royalle - Av. Brás de Pina, 1867 - Vista Alegre, Rio de Janeiro.",
 };
 
 export default function RootLayout({

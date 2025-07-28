@@ -61,7 +61,7 @@ export default function ConfirmacoesPage() {
         subtitle="Gerencie todas as confirmações de convite para a festa."
       />
       
-      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
+      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6 max-w-7xl mx-auto w-full">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>

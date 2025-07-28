@@ -68,7 +68,7 @@ export default function ImagesPage() {
         subtitle="Gerencie as fotos da festa de 15 anos da Carol."
       />
 
-      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6">
+      <main className="flex flex-1 flex-col gap-6 p-4 lg:gap-8 lg:p-6 max-w-7xl mx-auto">
         {/* Upload Area */}
         <Card>
           <CardHeader>
