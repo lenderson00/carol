@@ -2,9 +2,9 @@ import { authOptions } from "@/lib/auth";
 import NextAuth from "next-auth";
 import { type NextRequest, NextResponse } from "next/server";
 
-export const publicRoutes: string[] = ["/"];
+export const publicRoutes: string[] = ["/", "/lista"];
 
-export const authRoutes = ["/entrar", "/registrar", "/resetar-senha"];
+export const authRoutes = ["/entrar"];
 
 export const defaultRedirects = {
   isNotAuthenticated: "/entrar",
@@ -46,8 +46,7 @@ export default auth(async (req: NextAuthRequest) => {
   const isAuthRoute = authRoutes.includes(pathname);
   const isApiRoute = pathname.startsWith("/api/");
   const isPublicRoute = publicRoutes.includes(pathname);
-  const isNewPasswordRoute = pathname === "/nova-senha";
-  const path = nextUrl.pathname;
+
 
   const response = NextResponse.next({
     request: {
@@ -57,10 +56,6 @@ export default auth(async (req: NextAuthRequest) => {
 
   // Allow API routes to pass through
   if (isApiRoute) {
-    return response;
-  }
-
-  if (path.includes("/docs")) {
     return response;
   }
 
@@ -89,16 +84,7 @@ export default auth(async (req: NextAuthRequest) => {
     );
   }
 
-  if (isNewPasswordRoute) {
-    return response;
-  }
 
 
-
-
-  // If role is not valid for a logged-in user reaching this point (which means isLogged is true).
-  // This is an unexpected state for a logged-in user on a path that wasn't handled by earlier checks.
-  // It implies the user is logged in, but their role is missing or not a string.
-  // console.warn(`Middleware: User is logged in, but role is missing or invalid ('${role}') for path ${pathname}. Passing through without rewrite.`);
   return response; // Pass through without rewrite
 });
