@@ -1,144 +1,115 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Heart, Gift, Home, Menu, X, Settings } from "lucide-react"
-import { useState } from "react"
-import { useSession } from "next-auth/react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import Link from 'next/link'
+import { Heart, Menu, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import React from 'react'
+import { cn } from '@/lib/utils'
+
+const menuItems = [
+    { name: 'Início', href: '#home' },
+    { name: 'Galeria', href: '#gallery' },
+    { name: 'Música', href: '#music' },
+    { name: 'Localização', href: '#location' },
+]
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { data: session } = useSession()
-  const { scrollY } = useScroll()
-  
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 100],
-    ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.1)"]
-  )
-  
-  const backdropBlur = useTransform(
-    scrollY,
-    [0, 100],
-    ["blur(0px)", "blur(12px)"]
-  )
+    const [menuState, setMenuState] = React.useState(false)
+    const [isScrolled, setIsScrolled] = React.useState(false)
 
-  return (
-    <motion.nav 
-      className="fixed top-0 left-0 right-0 z-50 border-b border-white/20"
-      style={{
-        backgroundColor,
-        backdropFilter: backdropBlur,
-      }}
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo/Home */}
-          <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Link href="/" className="flex items-center space-x-2 text-white hover:text-primary transition-colors">
-              <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
-              <span className="font-semibold text-base sm:text-lg">Ana Carolina 15 Anos</span>
-            </Link>
-          </motion.div>
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
-          {/* Desktop Navigation Links */}
-          <motion.div 
-            className="hidden md:flex items-center space-x-4"
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="text-white hover:text-primary hover:bg-white/10">
-                <Home className="h-4 w-4 mr-2" />
-                Início
-              </Button>
-            </Link>
-            <Link href="/lista">
-              <Button variant="ghost" size="sm" className="text-white hover:text-primary hover:bg-white/10">
-                <Gift className="h-4 w-4 mr-2" />
-                Lista de Presentes
-              </Button>
-            </Link>
-            {session && (
-              <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="text-white hover:text-primary hover:bg-white/10">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Dashboard
-                </Button>
-              </Link>
-            )}
-          </motion.div>
+    return (
+        <header>
+            <nav
+                data-state={menuState && 'active'}
+                className="fixed z-50 w-full px-2">
+                <div className={cn('mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12', isScrolled && 'bg-black/20 max-w-4xl rounded-2xl border border-white/20 backdrop-blur-lg lg:px-5')}>
+                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
+                        <div className="flex w-full justify-between lg:w-auto">
+                            <Link
+                                href="/"
+                                aria-label="home"
+                                className="flex items-center space-x-2 text-white hover:text-primary transition-colors">
+                                <Heart className="h-5 w-5 sm:h-6 sm:w-6" />
+                                <span className="font-semibold text-base sm:text-lg">Ana Carolina 15 Anos</span>
+                            </Link>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-white hover:text-primary transition-colors"
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </motion.button>
-        </div>
+                            <button
+                                onClick={() => setMenuState(!menuState)}
+                                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
+                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 text-white hover:text-primary transition-colors lg:hidden">
+                                <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
+                                <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
+                            </button>
+                        </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <motion.div 
-            className="md:hidden bg-white/10 backdrop-blur-md border-t border-white/20"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link href="/">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="w-full justify-start text-white hover:text-primary hover:bg-white/10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Home className="h-4 w-4 mr-2" />
-                  Início
-                </Button>
-              </Link>
-              <Link href="/lista">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="w-full justify-start text-white hover:text-primary hover:bg-white/10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Gift className="h-4 w-4 mr-2" />
-                  Lista de Presentes
-                </Button>
-              </Link>
-              {session && (
-                <Link href="/dashboard">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="w-full justify-start text-white hover:text-primary hover:bg-white/10"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Settings className="h-4 w-4 mr-2" />
-                    Dashboard
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </div>
-    </motion.nav>
-  )
+                        <div className="absolute inset-0 m-auto hidden size-fit lg:block">
+                            <ul className="flex gap-8 text-sm">
+                                {menuItems.map((item, index) => (
+                                    <li key={index}>
+                                        <Link
+                                            href={item.href}
+                                            className="text-white/80 hover:text-primary block duration-150 font-medium">
+                                            <span>{item.name}</span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="bg-black/20 backdrop-blur-md in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border border-white/20 p-6 shadow-2xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
+                            <div className="lg:hidden">
+                                <ul className="space-y-6 text-base">
+                                    {menuItems.map((item, index) => (
+                                        <li key={index}>
+                                            <Link
+                                                href={item.href}
+                                                className="text-white/80 hover:text-primary block duration-150 font-medium"
+                                                onClick={() => setMenuState(false)}>
+                                                <span>{item.name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                    className={cn("border-white/20 text-white hover:bg-white/10", isScrolled && 'lg:hidden')}>
+                                    <Link href="#gallery">
+                                        <span>Galeria</span>
+                                    </Link>
+                                </Button>
+                                <Button
+                                    asChild
+                                    size="sm"
+                                    className={cn("bg-primary hover:bg-primary/90 text-white", isScrolled && 'lg:hidden')}>
+                                    <Link href="#confirmation">
+                                        <span>Confirmar</span>
+                                    </Link>
+                                </Button>
+                                <Button
+                                    asChild
+                                    size="sm"
+                                    className={cn("bg-primary hover:bg-primary/90 text-white", isScrolled ? 'lg:inline-flex' : 'hidden')}>
+                                    <Link href="#confirmation">
+                                        <span>Confirmar Presença</span>
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    )
 } 
